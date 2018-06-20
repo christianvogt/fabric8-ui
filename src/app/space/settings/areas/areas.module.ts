@@ -14,6 +14,10 @@ import { AreasToolbarModule } from './areas-toolbar/areas-toolbar.module';
 import { AreasComponent } from './areas.component';
 import { CreateAreaDialogModule } from './create-area-dialog/create-area-dialog.module';
 
+import { PlatformModule } from '../../../mobx/platform.module';
+
+import { AreasCStore } from './areas.cstore';
+
 @NgModule({
   imports: [
     ActionModule,
@@ -24,13 +28,15 @@ import { CreateAreaDialogModule } from './create-area-dialog/create-area-dialog.
     CreateAreaDialogModule,
     Fabric8WitModule,
     TreeListModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    PlatformModule
   ],
   declarations: [
     AreasComponent
   ],
   providers: [
-    BsDropdownConfig
+    BsDropdownConfig,
+    AreasCStore
   ]
 })
 export class AreasModule {

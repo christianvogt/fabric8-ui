@@ -39,6 +39,14 @@ export const routes: Routes = [
     loadChildren: './landing-page/landing-page.module#LandingPageModule',
     pathMatch: 'full'
   },
+  // // State management test
+  // {
+  //   path: 'test',
+  //   loadChildren: './statetest/state-management.module#StateManagementModule',
+  //   data: {
+  //     title: 'Testing'
+  //   }
+  // },
 
   // Home
   {

@@ -28,15 +28,15 @@ export class AreasToolbarComponent implements OnChanges, OnInit {
   @Output('onFilterChange') onFilterChange = new EventEmitter();
   @Output('onSortChange') onSortChange = new EventEmitter();
 
-  @ViewChild('addAreasTemplate') addAreasTemplate: TemplateRef<any>;
+  // @ViewChild('addAreasTemplate') addAreasTemplate: TemplateRef<any>;
 
   filterConfig: FilterConfig;
   isAscendingSort: boolean = true;
   sortConfig: SortConfig;
   toolbarConfig: ToolbarConfig;
 
-  constructor() {
-  }
+  // constructor() {
+  // }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.resultsCount && this.filterConfig) {

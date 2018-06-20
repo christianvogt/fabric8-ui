@@ -1,39 +1,36 @@
-<areas-toolbar
+<ng-template *reaction="store.loadReaction"></ng-template>
+<areas-toolbar *observer
     (onAddArea)="addChildArea()"
     (onFilterChange)="filterChange($event)"
     (onSortChange)="sortChange($event)"
-    [resultsCount]="resultsCount">
+    [resultsCount]="store.resultsCount">
 </areas-toolbar>
-<div class="container-fluid">
+<div *ngIf="store.showAreas" class="container-fluid">
   <div class="row">
     <div class="col-sm-12">
-      <pfng-tree-list
+      <pfng-tree-list *observer
           [actionTemplate]="actionTemplate"
           [config]="treeListConfig"
           [itemTemplate]="itemTemplate"
-          [items]="treeAreas"
+          [items]="store.rootTreeNodes"
           (onActionSelect)="handleAction($event)">
         <ng-template #itemTemplate let-node="node" let-index="index">
           <div class="list-pf-content-wrapper">
             <div class="list-pf-main-content">
-              <div class="list-pf-title">{{node.data?.attributes?.name}}</div>
+              <div class="list-pf-title">{{node.data.label}}</div>
             </div>
           </div>
         </ng-template>
         <ng-template #actionTemplate let-node="node" let-index="index">
           <pfng-action class="list-pf-actions"
                        [config]="actionConfig"
-                       (onActionSelect)="handleAction($event, node)">
+                       (onActionSelect)="handleAction($event, node.area)">
           </pfng-action>
         </ng-template>
       </pfng-tree-list>
     </div>
   </div>
 </div>
-<div class="modal fade" bsModal #modal="bs-modal" tabindex="-1" role="dialog" aria-hidden="true" (onShown)="createAreaDialog.onOpen()" (onHide)="createAreaDialog.onClose()">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <create-area-dialog #createAreaDialog [host]="modal" [parentId]="selectedAreaId" [areas]="allAreas" (onAdded)="addArea($event)"></create-area-dialog>
-    </div>
-  </div>
+<div class="modal fade" bsModal #staticModal="bs-modal" tabindex="-1" role="dialog" aria-hidden="true" (onShow)="onDialogShow()" onHide="onDialogHide()">
+  <create-area-dialog *ngIf="showCreateAreaDialog" [host]="modal" [parentId]="selectedAreaId" [areas]="allAreas" (onAdded)="addArea($event)" (onCancel)="closeModal()"></create-area-dialog>
 </div>

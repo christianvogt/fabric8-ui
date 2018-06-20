@@ -27,6 +27,7 @@ export class CreateAreaDialogComponent implements OnInit {
   @Input() parentId: string;
   @Input() areas: Area[];
   @Output() onAdded = new EventEmitter<Area>();
+  @Output() onCancel = new EventEmitter<Area>();
   @ViewChild('areaForm') areaForm: NgForm;
 
   @ViewChild('rawInputField') rawInputField: ElementRef;
@@ -36,44 +37,49 @@ export class CreateAreaDialogComponent implements OnInit {
   AreaCreationStatus: typeof AreaCreationStatus = AreaCreationStatus;
 
   name: string;
-  private _areaCreationStatus: AreaCreationStatus;
+  areaCreationStatus: AreaCreationStatus;
 
   constructor(
     private areaService: AreaService) {
   }
 
-  public onOpen() {
-    this.focus();
-  }
-
-  public onClose() {
-    this.clearField();
+  reset() {
+    this.inputModel.reset();
     this.resetErrors();
   }
 
-  focus() {
-    this.rawInputField.nativeElement.focus();
-  }
+  // public onOpen() {
+  //   this.focus();
+  // }
+
+  // public onClose() {
+  //   this.clearField();
+  //   this.resetErrors();
+  // }
+
+  // focus() {
+  //   this.rawInputField.nativeElement.focus();
+  // }
 
   ngOnInit() {
     this.resetErrors();
   }
 
-  clearField() {
-    this.inputModel.reset();
-  }
+  // clearField() {
+  //   this.inputModel.reset();
+  // }
 
   resetErrors() {
-    this._areaCreationStatus = AreaCreationStatus.OK;
+    this.areaCreationStatus = AreaCreationStatus.OK;
   }
 
   validateAreaName(): void {
     this.resetErrors();
     if (this.name.trim().length === 0) {
-      this._areaCreationStatus = AreaCreationStatus.EMPTY_NAME_FAILURE;
+      this.areaCreationStatus = AreaCreationStatus.EMPTY_NAME_FAILURE;
     }
     if (this.name.trim().length > 63) {
-      this._areaCreationStatus = AreaCreationStatus.EXCEED_LENGTH_FAILURE;
+      this.areaCreationStatus = AreaCreationStatus.EXCEED_LENGTH_FAILURE;
     }
   }
 
@@ -100,21 +106,17 @@ export class CreateAreaDialogComponent implements OnInit {
   }
 
   cancel() {
-    this.host.hide();
+    // this.host.hide();
+    this.onCancel.emit();
   }
 
-  handleError(error: any) {
+  private handleError(error: any) {
     if (error.errors.length) {
       error.errors.forEach(error => {
         if (error.status === '409') {
-          this._areaCreationStatus = AreaCreationStatus.UNIQUE_VALIDATION_FAILURE;
+          this.areaCreationStatus = AreaCreationStatus.UNIQUE_VALIDATION_FAILURE;
         }
       });
     }
   }
-
-  get areaCreationStatus(): AreaCreationStatus {
-    return this._areaCreationStatus;
-  }
-
 }
